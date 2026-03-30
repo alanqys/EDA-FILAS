@@ -1,0 +1,44 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Processo {
+    String identificador;
+    int tempoExecucao;
+
+    public Processo(String identificador, int tempoExecucao) {
+        this.identificador = identificador;
+        this.tempoExecucao = tempoExecucao;
+    }
+}
+
+class ControleProcessos {
+    private Queue<Processo> fila = new LinkedList<>();
+
+    public void adicionar(String id, int tempo) {
+        fila.add(new Processo(id, tempo));
+        System.out.println("Processo " + id + " entrou na fila.");
+    }
+
+    public void executar() {
+        while (!fila.isEmpty()) {
+            Processo atual = fila.poll();
+            System.out.println("Agora executando: " + atual.identificador +
+                               " | Tempo estimado: " + atual.tempoExecucao);
+        }
+        System.out.println("Todos os processos foram executados.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ControleProcessos controle = new ControleProcessos();
+
+        controle.adicionar("P1", 4);
+        controle.adicionar("P2", 2);
+        controle.adicionar("P3", 6);
+
+        System.out.println("\nIniciando execução...\n");
+
+        controle.executar();
+    }
+}
