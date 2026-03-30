@@ -7,3 +7,34 @@ class Documento {
         this.paginas = paginas;
     }
 }
+
+------------------------------------------------
+
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Queue<Documento> fila = new LinkedList<>();
+
+        fila.add(new Documento("TCC", 1));
+        fila.add(new Documento("Redação", 2));
+        fila.add(new Documento("Artigo Científico", 3));
+        fila.add(new Documento("Código Penal", 4));
+        fila.add(new Documento("Constituição Federal", 5));
+
+        System.out.println("\nFila:\n");
+        for (Documento d : fila) {
+            System.out.println(d.nome + " - " + d.paginas + " páginas");
+        }
+
+        System.out.println("\nImprimindo:\n");
+        while (!fila.isEmpty()) {
+            Documento d = fila.poll();
+            System.out.println("Imprimindo: " + d.nome);
+        }
+
+        System.out.println("\nFila vazia.");
+    }
+}
