@@ -1,60 +1,88 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
-class Documento {
-    String nome;
-    int paginas;
-    int prioridade;
-    int ordem;
+class Documento implements Comparable<Documento> {
+    private String nome;
+    private int paginas;
+    private int prioridade;
+    private int ordemChegada;
 
-    public Documento(String nome, int paginas, int prioridade, int ordem) {
+    private static int contador = 0; // controla a ordem de chegada
+
+    public Documento(String nome, int paginas, int prioridade) {
         this.nome = nome;
         this.paginas = paginas;
         this.prioridade = prioridade;
-        this.ordem = ordem;
-    }
-}
-
-class FilaImpressao {
-    private PriorityQueue<Documento> fila;
-    private int contador;
-
-    public FilaImpressao() {
-        contador = 0;
-
-        fila = new PriorityQueue<>((d1, d2) -> {
-            if (d1.prioridade != d2.prioridade) {
-                return d2.prioridade - d1.prioridade;
-            }
-            return d1.ordem - d2.ordem;
-        });
+        this.ordemChegada = contador++;
     }
 
-    public void adicionarDocumento(String nome, int paginas, int prioridade) {
-        fila.add(new Documento(nome, paginas, prioridade, contador++));
+    public String getNome() {
+        return nome;
     }
 
-    public void imprimirProximo() {
-        if (fila.isEmpty()) {
-            System.out.println("Fila vazia.");
-            return;
+    public int getPaginas() {
+        return paginas;
+    }
+
+    public int getPrioridade() {
+        return prioridade;
+    }
+
+
+    @Override
+    public int compareTo(Documento outro) {
+
+        if (this.prioridade != outro.prioridade) {
+            return outro.prioridade - this.prioridade;
         }
 
-        Documento doc = fila.poll();
-        System.out.println("Imprimindo: " + doc.nome +
-                " (" + doc.paginas + " páginas, prioridade " + doc.prioridade + ")");
+        return this.ordemChegada - outro.ordemChegada;
+    }
+
+    @Override
+    public String toString() {
+        return "Documento{" +
+                "nome='" + nome + '\'' +
+                ", paginas=" + paginas +
+                ", prioridade=" + prioridade +
+                '}';
     }
 }
 
-public class Main {
+public class FilaImpressao {
+    private PriorityQueue<Documento> fila;
+
+    public FilaImpressao() {
+        fila = new PriorityQueue<>();
+    }
+
+
+    public void adicionarDocumento(Documento doc) {
+        fila.add(doc);
+        System.out.println("Documento adicionado: " + doc);
+    }
+
+
+    public void imprimirTodos() {
+        System.out.println("\n=== Iniciando impressão ===");
+        while (!fila.isEmpty()) {
+            Documento doc = fila.poll();
+            System.out.println("Imprimindo: " + doc.getNome() + " (" + doc.getPaginas() + " páginas, prioridade " + doc.getPrioridade() + ")");
+        }
+        System.out.println("=== Impressão finalizada ===");
+    }
+
     public static void main(String[] args) {
-        FilaImpressao fila = new FilaImpressao();
+        FilaImpressao impressora = new FilaImpressao();
 
-        fila.adicionarDocumento("Relatório", 10, 2);
-        fila.adicionarDocumento("Contrato", 5, 3);
-        fila.adicionarDocumento("Email", 2, 2);
 
-        fila.imprimirProximo();
-        fila.imprimirProximo();
-        fila.imprimirProximo();
+        impressora.adicionarDocumento(new Documento("Relatório Financeiro", 10, 2));
+        impressora.adicionarDocumento(new Documento("Contrato Cliente", 5, 3));
+        impressora.adicionarDocumento(new Documento("Resumo Semanal", 3, 2));
+        impressora.adicionarDocumento(new Documento("Apresentação", 15, 1));
+
+   
+        impressora.imprimirTodos();
     }
 }
