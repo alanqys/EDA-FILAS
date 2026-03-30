@@ -1,44 +1,69 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
+
 class Processo {
-    String identificador;
-    int tempoExecucao;
+    private String identificador;
+    private int tempoExecucao; // em segundos
 
     public Processo(String identificador, int tempoExecucao) {
         this.identificador = identificador;
         this.tempoExecucao = tempoExecucao;
     }
-}
 
-class ControleProcessos {
-    private Queue<Processo> fila = new LinkedList<>();
-
-    public void adicionar(String id, int tempo) {
-        fila.add(new Processo(id, tempo));
-        System.out.println("Processo " + id + " entrou na fila.");
+    public String getIdentificador() {
+        return identificador;
     }
 
-    public void executar() {
-        while (!fila.isEmpty()) {
-            Processo atual = fila.poll();
-            System.out.println("Agora executando: " + atual.identificador +
-                               " | Tempo estimado: " + atual.tempoExecucao);
+    public int getTempoExecucao() {
+        return tempoExecucao;
+    }
+
+    @Override
+    public String toString() {
+        return "Processo " + identificador + " (Tempo estimado: " + tempoExecucao + "s)";
+    }
+}
+
+public class ControleProcessos {
+    private Queue<Processo> filaProcessos;
+
+    public ControleProcessos() {
+        filaProcessos = new LinkedList<>();
+    }
+
+    public void adicionarProcesso(Processo processo) {
+        filaProcessos.add(processo);
+        System.out.println("Processo adicionado: " + processo);
+    }
+
+    public void executarProcessos() {
+        System.out.println("\n=== Iniciando execução dos processos ===");
+        while (!filaProcessos.isEmpty()) {
+            Processo processoAtual = filaProcessos.poll(); 
+            System.out.println("Executando: " + processoAtual);
+
+   
+            try {
+                Thread.sleep(processoAtual.getTempoExecucao() * 1000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Execução interrompida.");
+            }
+
+            System.out.println("Processo " + processoAtual.getIdentificador() + " concluído.");
+            System.out.println("Processos restantes na fila: " + filaProcessos.size() + "\n");
         }
-        System.out.println("Todos os processos foram executados.");
+        System.out.println("=== Todos os processos foram executados ===");
     }
-}
 
-public class Main {
     public static void main(String[] args) {
         ControleProcessos controle = new ControleProcessos();
 
-        controle.adicionar("P1", 4);
-        controle.adicionar("P2", 2);
-        controle.adicionar("P3", 6);
+        controle.adicionarProcesso(new Processo("P1", 2));
+        controle.adicionarProcesso(new Processo("P2", 3));
+        controle.adicionarProcesso(new Processo("P3", 1));
 
-        System.out.println("\nIniciando execução...\n");
-
-        controle.executar();
+        controle.executarProcessos();
     }
 }
