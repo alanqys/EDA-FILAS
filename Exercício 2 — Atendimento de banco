@@ -1,0 +1,24 @@
+public class BancoFila {
+
+    public static void main(String[] args) {
+
+
+        String[] nomes = {"Ana", "Bruno", "Carlos", "Daniela", "Eduardo", "Fernanda"};
+        int[] senhas = {1, 2, 3, 4, 5, 6};
+
+        int inicio = 0;
+        int tamanho = nomes.length;
+
+        System.out.println("Clientes enfileirados!\n");
+
+
+        while (inicio < tamanho) {
+            System.out.println("Chamando senha " + senhas[inicio] +
+                    " - Cliente: " + nomes[inicio]);
+            inicio++;
+        }
+        
+        System.out.println("\nTodos os clientes foram atendidos.");
+        System.out.println("A fila está vazia!");
+    }
+}
