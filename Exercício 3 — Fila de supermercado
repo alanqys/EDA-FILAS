@@ -1,0 +1,25 @@
+public class FilaSupermercado {
+
+    public static void main(String[] args) {
+
+        String[] nomes = {"Ana", "Bruno", "Carlos", "Daniela", "Eduardo"};
+        int[] produtos = {10, 5, 8, 3, 12};
+
+        int inicio = 0;
+        int tamanho = nomes.length;
+
+        System.out.println("Clientes na fila do supermercado:\n");
+
+        
+        while (inicio < tamanho) {
+            System.out.println("Atendendo cliente: " + nomes[inicio] +
+                    " (" + produtos[inicio] + " produtos)");
+
+            inicio++;
+
+            System.out.println("Clientes restantes na fila: " + (tamanho - inicio) + "\n");
+        }
+
+        System.out.println("Todos os clientes foram atendidos!");
+    }
+}
