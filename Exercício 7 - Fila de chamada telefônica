@@ -1,0 +1,78 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Chamada {
+    String nome;
+    String assunto;
+
+    public Chamada(String nome, String assunto) {
+        this.nome = nome;
+        this.assunto = assunto;
+    }
+}
+
+public class CentralTelefonica {
+    public static void main(String[] args) {
+        Queue<Chamada> fila = new LinkedList<>();
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("=== Central Telefônica ===");
+            System.out.println("1 - Adicionar chamada");
+            System.out.println("2 - Atender chamada");
+            System.out.println("3 - Mostrar status");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // limpar buffer
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("Nome da pessoa: ");
+                    String nome = scanner.nextLine();
+                    System.out.print("Assunto: ");
+                    String assunto = scanner.nextLine();
+
+                    fila.add(new Chamada(nome, assunto));
+                    System.out.println("Chamada adicionada!\n");
+                    break;
+
+                case 2:
+                    if (!fila.isEmpty()) {
+                        Chamada chamada = fila.poll();
+                        System.out.println("\n--- Atendendo chamada ---");
+                        System.out.println("Nome: " + chamada.nome);
+                        System.out.println("Assunto: " + chamada.assunto + "\n");
+                    } else {
+                        System.out.println("\nNenhuma chamada na fila!\n");
+                    }
+                    break;
+
+                case 3:
+                    if (!fila.isEmpty()) {
+                        Chamada proxima = fila.peek();
+                        System.out.println("\n--- Próxima chamada ---");
+                        System.out.println("Nome: " + proxima.nome);
+                        System.out.println("Assunto: " + proxima.assunto);
+                    } else {
+                        System.out.println("\nNenhuma chamada aguardando.");
+                    }
+
+                    System.out.println("Total na fila: " + fila.size() + "\n");
+                    break;
+
+                case 0:
+                    System.out.println("Encerrando sistema...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!\n");
+            }
+
+        } while (opcao != 0);
+
+        scanner.close();
+    }
+}
