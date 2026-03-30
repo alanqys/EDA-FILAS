@@ -1,0 +1,61 @@
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+class Paciente implements Comparable<Paciente> {
+    String nome;
+    int prioridade; // 1 = urgente, 2 = média, 3 = baixa
+
+    Paciente(String nome, int prioridade) {
+        this.nome = nome;
+        this.prioridade = prioridade;
+    }
+
+    @Override
+    public int compareTo(Paciente outro) {
+        return Integer.compare(this.prioridade, outro.prioridade);
+    }
+
+    @Override
+    public String toString() {
+        String nivel = prioridade == 1 ? "Urgente" : prioridade == 2 ? "Média" : "Baixa";
+        return nome + " (" + nivel + ")";
+    }
+}
+
+public class ProntoSocorro {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        PriorityQueue<Paciente> fila = new PriorityQueue<>();
+
+        // Enfileirando 6 pacientes
+        for (int i = 1; i <= 6; i++) {
+            System.out.print("Nome do paciente " + i + ": ");
+            String nome = sc.nextLine();
+
+            int prioridade;
+            while (true) {
+                System.out.print("Prioridade (1-Urgente / 2-Média / 3-Baixa): ");
+                prioridade = sc.nextInt();
+                sc.nextLine();
+                if (prioridade >= 1 && prioridade <= 3) break;
+                System.out.println("Escolha inválida. Tente novamente.");
+            }
+
+            fila.add(new Paciente(nome, prioridade));
+        }
+
+        System.out.println("\nFila organizada por prioridade:");
+        for (Paciente p : fila) {
+            System.out.println(p);
+        }
+
+        System.out.println("\nAtendimento dos pacientes:");
+        while (!fila.isEmpty()) {
+            Paciente atendido = fila.poll();
+            System.out.println("Atendendo: " + atendido);
+        }
+
+        sc.close();
+    }
+}
