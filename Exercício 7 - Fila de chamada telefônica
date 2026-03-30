@@ -1,78 +1,83 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+
 
 class Chamada {
-    String nome;
-    String assunto;
+    private String nome;
+    private String assunto;
 
     public Chamada(String nome, String assunto) {
         this.nome = nome;
         this.assunto = assunto;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getAssunto() {
+        return assunto;
+    }
+
+    @Override
+    public String toString() {
+        return "Chamada de " + nome + " - Assunto: " + assunto;
+    }
 }
 
+
 public class CentralTelefonica {
+    private Queue<Chamada> filaChamadas;
+
+    public CentralTelefonica() {
+        filaChamadas = new LinkedList<>();
+    }
+
+
+    public void receberChamada(Chamada chamada) {
+        filaChamadas.add(chamada);
+        System.out.println("Nova chamada recebida: " + chamada);
+    }
+
+    public void atenderChamada() {
+        if (filaChamadas.isEmpty()) {
+            System.out.println("Não há chamadas para atender.");
+        } else {
+            Chamada chamadaAtual = filaChamadas.poll();
+            System.out.println("Atendendo: " + chamadaAtual);
+        }
+    }
+
+    public void mostrarProximaChamada() {
+        if (filaChamadas.isEmpty()) {
+            System.out.println("Nenhuma chamada aguardando.");
+        } else {
+            System.out.println("Próxima chamada: " + filaChamadas.peek());
+        }
+    }
+
+    public void mostrarQuantidadeAguardando() {
+        System.out.println("Chamadas aguardando: " + filaChamadas.size());
+    }
+
     public static void main(String[] args) {
-        Queue<Chamada> fila = new LinkedList<>();
-        Scanner scanner = new Scanner(System.in);
-        int opcao;
+        CentralTelefonica central = new CentralTelefonica();
 
-        do {
-            System.out.println("=== Central Telefônica ===");
-            System.out.println("1 - Adicionar chamada");
-            System.out.println("2 - Atender chamada");
-            System.out.println("3 - Mostrar status");
-            System.out.println("0 - Sair");
-            System.out.print("Escolha: ");
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+        central.receberChamada(new Chamada("Alice", "Suporte Técnico"));
+        central.receberChamada(new Chamada("Bruno", "Financeiro"));
+        central.receberChamada(new Chamada("Carla", "Agendamento"));
 
-            switch (opcao) {
-                case 1:
-                    System.out.print("Nome da pessoa: ");
-                    String nome = scanner.nextLine();
-                    System.out.print("Assunto: ");
-                    String assunto = scanner.nextLine();
+        System.out.println();
+        central.mostrarProximaChamada();
+        central.mostrarQuantidadeAguardando();
 
-                    fila.add(new Chamada(nome, assunto));
-                    System.out.println("Chamada adicionada!\n");
-                    break;
+        System.out.println();
+        central.atenderChamada();
+        central.mostrarQuantidadeAguardando();
 
-                case 2:
-                    if (!fila.isEmpty()) {
-                        Chamada chamada = fila.poll();
-                        System.out.println("\n--- Atendendo chamada ---");
-                        System.out.println("Nome: " + chamada.nome);
-                        System.out.println("Assunto: " + chamada.assunto + "\n");
-                    } else {
-                        System.out.println("\nNenhuma chamada na fila!\n");
-                    }
-                    break;
-
-                case 3:
-                    if (!fila.isEmpty()) {
-                        Chamada proxima = fila.peek();
-                        System.out.println("\n--- Próxima chamada ---");
-                        System.out.println("Nome: " + proxima.nome);
-                        System.out.println("Assunto: " + proxima.assunto);
-                    } else {
-                        System.out.println("\nNenhuma chamada aguardando.");
-                    }
-
-                    System.out.println("Total na fila: " + fila.size() + "\n");
-                    break;
-
-                case 0:
-                    System.out.println("Encerrando sistema...");
-                    break;
-
-                default:
-                    System.out.println("Opção inválida!\n");
-            }
-
-        } while (opcao != 0);
-
-        scanner.close();
+        System.out.println();
+        central.atenderChamada();
+        central.mostrarProximaChamada();
+        central.mostrarQuantidadeAguardando();
     }
 }
